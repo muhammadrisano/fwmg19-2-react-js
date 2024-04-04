@@ -1,15 +1,8 @@
 import React from 'react'
-import './button.css'
 
-const Button = ({submit, children, name}) => {
-  const myName = 'risano'
-
-
+const Button = ({children, onClick, className=''}) => {
   return (
-    <>
-    {name === 'risano' ? <h1>helo risano</h1> : <h1>helo bro...</h1>}
-    <button className='button' onClick={()=>submit(myName)}>{children}</button>
-    </>
+    <button onClick={onClick} className={`px-4 py-2 rounded-md text-white ${className ? className : 'bg-yellow-500'}`}>{children}</button>
   )
 }
 

@@ -1,56 +1,74 @@
-import React, { useState } from 'react'
-import {Link, useNavigate, NavLink} from 'react-router-dom'
-import Input from '../../../components/Input'
+import React, { useState } from "react";
+import { Link, useNavigate, NavLink } from "react-router-dom";
+import Input from "../../../components/base/Input";
+import Button from "../../../components/base/Button";
+import axios from 'axios'
 
 const Login = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   // const [email, setEmail] = useState('')
   // const [password, setPassword] = useState('')
   const [form, setForm] = useState({
-    email: '',
-    password: ''
-  })
+    email: "",
+    password: "",
+  });
 
-  const handleLogin = ()=>{
-    // cek username dan password apakah benar
-    // kalau benar
-    // navigasi ke profile
-    alert(`email saya = ${form.email} dan password saya = ${form.password}`)
-    navigate('/main/profile')
 
-  }
-  const handleChange = (e)=>{
-    setForm({
-      ...form,
-      [e.target.name]: e.target.value
+  const handleLogin = (e)=>{
+    e.preventDefault()
+    axios({
+      method: 'POST',
+      url: 'https://fwm17-be-peword.vercel.app/v1/auth/login',
+      data: {
+        email: form.email,
+        password: form.password
+      }
+    })
+    .then((res)=>{
+      const {token, refreshToken} = res.data.data
+      localStorage.setItem('token', token)
+      localStorage.setItem('resfreshToken', refreshToken)
+      navigate('/main/profile')
+    })
+    .catch((err)=>{
+      console.log(err.response);
     })
   }
+  const handleChange = (e) => {
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value,
+    });
+  };
   return (
-    <div className='w-80 mx-auto'>
+    <div className="w-80 mx-auto">
       <div>
-        <h1 className='text-center font-bold text-xl text-black'>page Login</h1>
+        <h1 className="text-center font-bold text-xl text-black">page Login</h1>
       </div>
-      <div>
-        <Input 
-        value={form.email} 
-        onChange={handleChange} 
-        label="Email :"
-        name='email'
-        nomor={['noding', 'joging']}
-        />
-        <Input
-          type='password'
-          value={form.password}
-          onChange={handleChange}
-          name="password"
-          label="password :"
-        />
-      </div>
-      
-      <NavLink to="/">kembali ke home</NavLink>  
-      <button className='px-3 py-2 rounded bg-red-400 text-white' onClick={handleLogin}>login</button>
-    </div>
-  )
-}
+      <form onSubmit={handleLogin}>
+        <div>
+          <Input
+            value={form.email}
+            onChange={handleChange}
+            label="Email :"
+            name="email"
+            placeholder="Email"
+          />
+          <Input
+            type="password"
+            value={form.password}
+            onChange={handleChange}
+            name="password"
+            label="password :"
+            placeholder="*****"
+            test-id="test"
+          />
+        </div>
 
-export default Login
+        <Button className="bg-red-700">Login</Button>
+      </form>
+    </div>
+  );
+};
+
+export default Login;
