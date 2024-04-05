@@ -1,19 +1,14 @@
 import React, { useState, useEffect } from "react";
 import Input from "../../../components/base/Input";
 import Button from "../../../components/base/Button";
-import axios from "axios";
+import api from "../../../configs/api";
 
 const Skill = () => {
   const [skill, setSkill] = useState("");
   const [mySkill, setMySkill] = useState([]);
 
   const getSkill = ()=>{
-    const token = localStorage.getItem("token");
-    axios.get('https://fwm17-be-peword.vercel.app/v1/skills', {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      }
-    })
+    api.get('/skills')
     .then((res)=>{
      const skills = res.data.data
      setMySkill(skills)
@@ -21,20 +16,15 @@ const Skill = () => {
   }
 
   const handleAddSkll = () => {
-    const token = localStorage.getItem("token");
-    axios
+    api
       .post(
-        "https://fwm17-be-peword.vercel.app/v1/skills",
-        { skill_name: skill },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        `/skills`,
+        { skill_name: skill }
       )
       .then((res) => {
         alert("berhasil menambahkan skill");
         setSkill("");
+        getSkill()
       })
       .catch((err) => {
         console.log(err.response);

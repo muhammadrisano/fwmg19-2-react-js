@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate, NavLink } from "react-router-dom";
 import Input from "../../../components/base/Input";
 import Button from "../../../components/base/Button";
-import axios from 'axios'
+import api from "../../../configs/api";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -16,9 +16,9 @@ const Login = () => {
 
   const handleLogin = (e)=>{
     e.preventDefault()
-    axios({
+    api({
       method: 'POST',
-      url: 'https://fwm17-be-peword.vercel.app/v1/auth/login',
+      url: `/auth/login`,
       data: {
         email: form.email,
         password: form.password

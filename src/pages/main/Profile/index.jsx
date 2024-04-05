@@ -2,10 +2,12 @@ import React, { useState } from 'react'
 import { useEffect } from 'react'
 import axios from 'axios'
 import Card from '../../../components/module/Card'
+import { useNavigate } from 'react-router-dom'
 
 const Profile = () => {
   const [albums, setAlbums] = useState([])
   const [loading, setLoading] = useState(false)
+  const navigate = useNavigate()
 
 
   const getAlbums = ()=>{
@@ -24,6 +26,9 @@ const Profile = () => {
       setLoading(false)
     })
   }
+  const handleNavigate = (id) =>{
+    navigate(`/main/albums/${id}`)
+  }
   useEffect(()=>{
     getAlbums()
   },[])
@@ -34,7 +39,7 @@ const Profile = () => {
       {loading && <p className='text-2xl text-red-800'>Loadingg.....</p>}
       <div className='flex flex-wrap gap-3'>
           {albums.map((item)=>(
-            <Card title={item.title} photo={item.thumbnailUrl}/>
+            <Card title={item.title} photo={item.thumbnailUrl} onClick={()=>handleNavigate(item.id)}/>
           ))}
       </div>
     </div>

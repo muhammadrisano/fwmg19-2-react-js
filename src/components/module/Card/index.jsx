@@ -1,8 +1,8 @@
 import React from 'react'
 
-const Card = ({title, photo}) => {
+const Card = ({title, photo, onClick}) => {
   return (
-    <div className='w-52 h-72 border border-gray-600 rounded-lg overflow-hidden'>
+    <div onClick={onClick} className='w-52 h-72 border border-gray-600 rounded-lg overflow-hidden'>
       <div className='w-full h-36'>
         <img src={photo} alt="photo" className='w-full h-full object-cover' />
       </div>
