@@ -3,8 +3,11 @@ import { Link, useNavigate, NavLink } from "react-router-dom";
 import Input from "../../../components/base/Input";
 import Button from "../../../components/base/Button";
 import api from "../../../configs/api";
+import { useDispatch } from "react-redux";
+import { login } from "../../../configs/redux/action/userAction";
 
 const Login = () => {
+  const dispatch = useDispatch()
   const navigate = useNavigate();
   // const [email, setEmail] = useState('')
   // const [password, setPassword] = useState('')
@@ -16,23 +19,8 @@ const Login = () => {
 
   const handleLogin = (e)=>{
     e.preventDefault()
-    api({
-      method: 'POST',
-      url: `/auth/login`,
-      data: {
-        email: form.email,
-        password: form.password
-      }
-    })
-    .then((res)=>{
-      const {token, refreshToken} = res.data.data
-      localStorage.setItem('token', token)
-      localStorage.setItem('resfreshToken', refreshToken)
-      navigate('/main/profile')
-    })
-    .catch((err)=>{
-      console.log(err.response);
-    })
+    dispatch(login(form, navigate))
+   
   }
   const handleChange = (e) => {
     setForm({
